@@ -10,6 +10,8 @@ import android.widget.EditText
 import android.widget.Toast
 import android.Manifest
 import android.app.role.RoleManager
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -21,12 +23,6 @@ open class MainActivity : AppCompatActivity() {
 
     var dbHelper = DBHelper(this,"listdb.db",null,1)
 
-    companion object{
-        lateinit var numberlist : ArrayList<NumberData>
-
-    }
-
-
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,29 +30,31 @@ open class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this.getApplicationContext(), "WelCome!!", Toast.LENGTH_SHORT).show()
 
-        updateNumberList()
-
         //Register CallRedirectionService(class CallSelector)
-        Role_req()
+        roleReq()
+
+        val intent = Intent(this, MainService::class.java)
+        startForegroundService(intent)
 
 
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun Role_req(){
+    fun roleReq(){
         val mRole = getSystemService(ROLE_SERVICE)as RoleManager
 
         val intent = mRole.createRequestRoleIntent(RoleManager.ROLE_CALL_REDIRECTION)
 
 
-        this.startActivityForResult(intent,2)
+        this.startActivityForResult(intent, 2)
 
     }
 
-    fun updateNumberList(){
-        numberlist=dbHelper.getAllList()
+    fun reqUpdateService(){
+        val intent = Intent(this, MainService::class.java)
+        intent.putExtra("Request","Update")
+        startService(intent)
     }
-
 
     fun addNumber(view: View){
         /*
@@ -68,18 +66,19 @@ open class MainActivity : AppCompatActivity() {
         val addnum = NumberData(number.text.toString())
         dbHelper.addNumber(addnum)
 
+        reqUpdateService()
+
         Toast.makeText(this.getApplicationContext(),"Successfully Added", Toast.LENGTH_SHORT).show()
 
         number.editableText.clear()
 
-        updateNumberList()
     }
 
     fun getList(view: View) {
         /*
          Called by OnClick(listButton)
          */
-        val list_act = Intent(this,List::class.java)
+        val list_act = Intent(this,NUMLists::class.java)
         startActivity(list_act)
     }
 
@@ -113,11 +112,12 @@ open class MainActivity : AppCompatActivity() {
         phoneNumber=phoneNumber.replace("%20","")
         phoneNumber=phoneNumber.replace(" ","")
 
-        var addnum = NumberData(phoneNumber,name)
+        val addnum = NumberData(phoneNumber,name)
         dbHelper.addNumber(addnum)
 
+        reqUpdateService()
+
         Toast.makeText(getApplicationContext(), "Sucessfully Added", Toast.LENGTH_SHORT).show()
-        updateNumberList()
     }
 
 
@@ -210,3 +210,12 @@ open class MainActivity : AppCompatActivity() {
 
 }
 
+class BootReceive: BroadcastReceiver() {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onReceive(context: Context?, intent: Intent?) {
+        val mintent = Intent(context, MainService::class.java)
+        context?.startForegroundService(mintent)
+    }
+
+}

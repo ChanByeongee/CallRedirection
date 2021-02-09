@@ -1,39 +1,41 @@
 package com.example.calldesignate
 
-class NumberData {
-    var name: String = " ";
-    var number: String = " ";
+import java.io.Serializable
+
+class NumberData : Serializable {
+    var name: String = " "
+    var number: String = " "
 
     constructor() {}
 
     constructor(number: String) {
-        this.name = number;
-        this.number = number;
+        this.name = number
+        this.number = number
     }
 
     constructor(number: String, name: String) {
-        this.name = name;
-        this.number = number;
+        this.name = name
+        this.number = number
     }
 
     fun set_name(name: String) {
-        this.name = name;
+        this.name = name
     }
 
     fun set_number(number: String) {
-        this.number = number;
+        this.number = number
     }
 
     fun set_total(name: String, number: String) {
-        set_name(name);
-        set_number(number);
+        set_name(name)
+        set_number(number)
     }
 
     fun get_name(): String {
-        return this.name;
+        return this.name
     }
 
     fun get_number(): String {
-        return this.number;
+        return this.number
     }
 }

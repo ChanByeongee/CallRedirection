@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
+
 
 class ListAdapter(val context : Context, val listArry : ArrayList<NumberData>,val Listener : OnBtnClick) : BaseAdapter(),View.OnClickListener {
 
     /*
-        Implanted Interface : Listener
+        Implemented Interface : Listener
      */
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -44,10 +44,10 @@ class ListAdapter(val context : Context, val listArry : ArrayList<NumberData>,va
 
         when(v?.id){
             R.id.Modify -> {
-                modifyNum(v?.tag as Int)
+                modifyNum(v.tag as Int)
             }
             R.id.Delete -> {
-                deleteNum(v?.tag as Int)
+                deleteNum(v.tag as Int)
             }
         }
 
@@ -67,9 +67,6 @@ class ListAdapter(val context : Context, val listArry : ArrayList<NumberData>,va
     }
 
     fun modifyNum(pos:Int){
-
-
-
 
         val curnumber = listArry[pos]
 

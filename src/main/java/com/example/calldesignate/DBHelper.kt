@@ -13,9 +13,9 @@ class DBHelper(
 
 
     override fun onCreate(db: SQLiteDatabase) {
-        var sql : String = "CREATE TABLE if not exists ListTable (" +
+        val sql : String = "CREATE TABLE if not exists ListTable (" +
                 "_id INTEGER primary key autoincrement," +"Name TEXT, "+
-                "Number TEXT);";
+                "Number TEXT);"
 
         db.execSQL(sql)
     }
@@ -69,7 +69,7 @@ class DBHelper(
     fun deleteNumber(number: NumberData){
         val db = this.writableDatabase
 
-        db.delete("ListTable","Name Like ?", arrayOf(number.get_name().toString()))
+        db.delete("ListTable","Name Like ?", arrayOf(number.get_name()))
 
         db.close()
     }

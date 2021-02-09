@@ -18,7 +18,7 @@ class ModifyPopUp : Activity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.modify_popup)
 
-        var intent : Intent = getIntent()
+        val intent : Intent = getIntent()
         finder = intent.getStringExtra("Finder").toString()
 
     }
@@ -28,7 +28,7 @@ class ModifyPopUp : Activity() {
         val name = findViewById<EditText>(R.id.editName)
         val number = findViewById<EditText>(R.id.editNumber)
 
-        var intent = Intent()
+        val intent = Intent()
         intent.putExtra("Name",name.text.toString())
         intent.putExtra("Number",number.text.toString())
         intent.putExtra("Finder",finder)
@@ -41,7 +41,7 @@ class ModifyPopUp : Activity() {
 
     fun CancelClose(view: View){
         //Touch Cancel button
-        var intent = Intent()
+        val intent = Intent()
         setResult(RESULT_CANCELED,intent)
 
         finish()
